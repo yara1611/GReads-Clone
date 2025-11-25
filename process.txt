@@ -1,0 +1,39 @@
+The Process (Day 1/2)
+- started with the idea of cloning the popular reading website goodreads for the purpose
+of learning how to build a functional system with users and also building something i could
+actually use in real life
+- The use of Java Springboot was for practicing the framework in a realistic environment
+- The process starts with initializing the project with spring initializer and adding all required dependecies
+; it can be later changed in pom.xml file
+- each entity/object has its own set of files depending on the entities purpose
+- Anything that will write into/read from the connected database will have:
+    - Model class with its attributes
+    - Repository Interface
+    - Service class
+- to integrate an external API  a webclient was used to have an asynchronous connection??
+- DTOs were used to further decouple the code and the api response.
+- The goal is to have users that can add a book to one of their many reading lists,
+each readinglist will hold the userId and bookId
+- users can rate a book and a book can have the avg. rating of all users but i'm still figuring out how to work this efficiently.
+(Day 3)
+we have 3 tables in our database right now, Users, book and readingNow.
+only users and books have their functionalities implemented. now we have to design and implement the readingNow feature
+in day 2 we created the abstract class that will be the base of all future reading lists, and created the model class of readingNow feature.
+----
+I found an error in my previous design of the readingList schema which was that each time i create a new Reading List i was creating a new entry with no List attached
+to fix it I:
+- created a ReadingList Model class (Id, userId, entryId)
+- edited the entry model class (id,ListId,BookId, timeStamp)
+- joined the entry class to the readingList so that each readingList have a list of bookEntries and each entry have one list attached
+another problem i faced with this setup is while fetching the entries inside a reading list the json response was recursivly infinite to fix this we have 3 choices:
+- make DTOs of the exact response
+- use @JsonManagedReference/@JsonBackReference (used for simplicity but will be changed later)
+- use @JsonIdentityInfo
+Why is @JsonIdentityInfo the recommended choice?
+- Handles multiple bi-directional relationships without infinite recursion.
+- Works directly with entities (no DTOs).
+- Keeps per-book metadata accessible.
+- Scales better than @JsonManagedReference/@JsonBackReference.
+- @JsonManagedReference/@JsonBackReference is okay for one-level, simple parent-child,
+but in my setup (ReadingNow → Entry → Book → maybe User → …), it quickly becomes fragile.
+- next time I hope to refactor the code to use the @JsonIdentityInfo, add rating system and have a basic reading list that have multiple types (want to read, reading now, custom)
