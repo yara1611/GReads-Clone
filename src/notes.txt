@@ -1,0 +1,27 @@
+- handle ratings???
+Integrating Google Books Api:
+- Make a key in Google Cloud
+- add the Books Service
+In Java:
+- make DTOs
+- the model Book
+- configure the WebClient
+- inject the webclient into book service
+- add to controller
+Integrating swaggerUI with springboot
+- add the dependency
+<dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.2.0</version> <!-- Use the latest stable version -->
+ </dependency>
+ - run the app at http://localhost:8080/swagger-ui.html or http://localhost:8080/swagger-ui/index.html
+ - to customize it u can make a swaggerConfig file with an OpenAPI function
+ @Bean
+         public OpenAPI customOpenAPI() {
+             return new OpenAPI()
+                     .info(new Info()
+                             .title("My API Title")
+                             .version("1.0")
+                             .description("Description of my API"));
+         }
