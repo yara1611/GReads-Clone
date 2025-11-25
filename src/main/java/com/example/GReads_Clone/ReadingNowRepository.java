@@ -1,0 +1,8 @@
+package com.example.GReads_Clone;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ReadingNowRepository extends JpaRepository<ReadingNow,Long> {
+}

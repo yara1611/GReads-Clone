@@ -20,6 +20,10 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public User getUser(Long id){
+        return userRepository.findById(id).get();
+    }
+
 
     public void deleteUser(Long id){
         boolean exists = userRepository.existsById(id);
