@@ -40,16 +40,11 @@ public class ReadingListService {
     }
 
     public boolean checkUserList(Long userId){
-       if(readingListRepository.existsByUserIdAndListType(userId,ReadingListType.READING_NOW)
-       |readingListRepository.existsByUserIdAndListType(userId,ReadingListType.WANT_TO_READ)
-       | readingListRepository.existsByUserIdAndListType(userId,ReadingListType.FINISHED)){
-           return true;
-       }
-       return false;
+        return readingListRepository.existsByUserIdAndListType(userId, ReadingListType.READING_NOW)
+                | readingListRepository.existsByUserIdAndListType(userId, ReadingListType.WANT_TO_READ)
+                | readingListRepository.existsByUserIdAndListType(userId, ReadingListType.FINISHED);
     }
-    public void createReadingNowList(Long userId){
-        createList(userId,ReadingListType.READING_NOW);
-    }
+
     //adds new entry
     public void addBookToList(Long listId, String isbn){
 
@@ -64,12 +59,9 @@ public class ReadingListService {
        System.out.println("Added to list successfully");
     }
 
-    public void createEntry(String isbn){
 
-    }
     public List<ReadingListEntry> getAllEntries(Long listId){
-        List<ReadingListEntry> entries = readingListRepository.findById(listId).get().getEntries();
-        return entries;
+        return readingListRepository.findById(listId).get().getEntries();
     }
 
 }
