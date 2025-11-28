@@ -25,3 +25,4 @@ Integrating swaggerUI with springboot
                              .version("1.0")
                              .description("Description of my API"));
          }
+Database Schema: https://drawsql.app/teams/yara-9/diagrams/greads-clone

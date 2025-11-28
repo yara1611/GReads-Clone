@@ -1,9 +1,8 @@
 package com.example.GReads_Clone.Book;
 
-import com.example.GReads_Clone.BaseReadingListEntry;
-import com.example.GReads_Clone.ReadingNow;
-import com.example.GReads_Clone.ReadingNowService;
-import com.example.GReads_Clone.User.User;
+import com.example.GReads_Clone.ReadingLists.ReadingListEntry;
+import com.example.GReads_Clone.ReadingLists.ReadingListService;
+import com.example.GReads_Clone.enums.ReadingListType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class BookController {
     @Autowired
     private ApiService apiService;
     @Autowired
-    ReadingNowService readingNowService;
+    ReadingListService readingNowService;
 
     @GetMapping("/{isbn}")
     public Book getBook(@PathVariable String isbn) {
@@ -42,8 +41,8 @@ public class BookController {
     }
 
     @PostMapping("/createReadingList")
-    public ResponseEntity<String> createRL(@RequestParam Long userId){
-        readingNowService.createList(userId);
+    public ResponseEntity<String> createRL(@RequestParam Long userId,@RequestParam ReadingListType listType){
+        readingNowService.createList(userId, listType);
         return ResponseEntity.ok().body("Created Successfully");
     }
 
@@ -52,8 +51,10 @@ public class BookController {
         readingNowService.addBookToList(listId,isbn);
         return ResponseEntity.ok().body("Added Successfully");
     }
+
+
     @GetMapping("/getBooksInList")
-    public List<BaseReadingListEntry> getAllBooks(@RequestParam Long listId){
+    public List<ReadingListEntry> getAllBooks(@RequestParam Long listId){
         return readingNowService.getAllEntries(listId);
     }
 }

@@ -66,7 +66,7 @@ public class ApiService {
         }
     }
     public Book fetchBookFromDB(String isbn){
-        if(bookRepository.existsById(isbn)){
+        if(!bookRepository.existsById(isbn)){
             createBook(isbn);
         };
         return bookRepository.findById(isbn).get();

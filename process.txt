@@ -25,15 +25,26 @@ to fix it I:
 - created a ReadingList Model class (Id, userId, entryId)
 - edited the entry model class (id,ListId,BookId, timeStamp)
 - joined the entry class to the readingList so that each readingList have a list of bookEntries and each entry have one list attached
-another problem i faced with this setup is while fetching the entries inside a reading list the json response was recursivly infinite to fix this we have 3 choices:
+another problem I faced with this setup is while fetching the entries inside a reading list the json response was recursivly infinite to fix this we have 3 choices:
 - make DTOs of the exact response
 - use @JsonManagedReference/@JsonBackReference (used for simplicity but will be changed later)
 - use @JsonIdentityInfo
 Why is @JsonIdentityInfo the recommended choice?
-- Handles multiple bi-directional relationships without infinite recursion.
+- Handles multiple bidirectional relationships without infinite recursion.
 - Works directly with entities (no DTOs).
 - Keeps per-book metadata accessible.
 - Scales better than @JsonManagedReference/@JsonBackReference.
 - @JsonManagedReference/@JsonBackReference is okay for one-level, simple parent-child,
 but in my setup (ReadingNow → Entry → Book → maybe User → …), it quickly becomes fragile.
 - next time I hope to refactor the code to use the @JsonIdentityInfo, add rating system and have a basic reading list that have multiple types (want to read, reading now, custom)
+(Day 4)
+- first I started with renaming the baseReadingListEntry to ReadingListEntry to be less redundant
+- there was a huge logic bug in the ApiService where I checked that if a book exists in database, i create it again
+- you can't use @MappedSuperclass when you're joining with an Entity
+- realized that ReadingNow existence doesn't make sense, and it's better to be generalized under "ReadingList"
+- readingList has a column for the list type and added a column for bookProgress in readingListEntry which are both enums stored in their own package
+- added in userConfig code to create a readingList and assignIt to user on running
+- I'm aiming for (want_to_read, finished and reading_now) lists to be created once for a user and the others are custom, so
+i created a function that calls the createList for each type and will think of how to make a constriction to make it only done once per user
+- created CheckUserLists by adding in the repo a function that checks if a lists by the provided user and type has exists or not and using in the service for each type
+and edited the createBasicLists function

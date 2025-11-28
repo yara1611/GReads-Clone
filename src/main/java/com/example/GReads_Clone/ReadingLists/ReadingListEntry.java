@@ -1,7 +1,7 @@
-package com.example.GReads_Clone;
+package com.example.GReads_Clone.ReadingLists;
 
 import com.example.GReads_Clone.Book.Book;
-import com.example.GReads_Clone.User.User;
+import com.example.GReads_Clone.enums.bookStatus;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -13,20 +13,26 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-public class BaseReadingListEntry {
+@Setter
+@Getter
+public class ReadingListEntry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "reading_now_list_id")
+    @JoinColumn(name = "reading_list_id")
     @JsonBackReference //to prevent infinite recursion (ignore this side)
-    private ReadingNow readingNowList;
+    private ReadingList readingList;
 
     @ManyToOne
     @JoinColumn(name = "book_isbn", nullable = false)
 
     private Book book;
 
+    private int currentProgress;
+    @Enumerated(EnumType.STRING)
+    private bookStatus status;
     private LocalDateTime addedAt = LocalDateTime.now();
 }
+
