@@ -29,4 +29,27 @@ public class UserController {
         return ResponseEntity.ok().body(user.toString());
     }
 
+    @PostMapping("/getUser")
+    public ResponseEntity<String> getUser(@RequestBody Long userId){
+        User user = userService.getUser(userId);
+        return ResponseEntity.ok().body(user.toString());
+    }
+
+    @DeleteMapping("/deleteUser")
+    public ResponseEntity<String> deleteUser(@RequestBody Long userId){
+        userService.deleteUser(userId);
+        return ResponseEntity.ok().body("Successfully delete user <"+userId+">");
+    }
+
+
+
+//        @DeleteMapping("/{userId}/entries/{entryId}")
+//        public ResponseEntity<String> removeEntry(@PathVariable Long userId,
+//                                                  @PathVariable Long entryId) {
+//            readingListService.removeEntryFromList(userId, entryId);
+//            return ResponseEntity.ok("Entry removed successfully");
+//        }
+
+
+
 }

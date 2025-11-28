@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import javax.swing.text.html.Option;
-import java.util.Optional;
 
 @Service
 public class ApiService {
@@ -32,7 +30,7 @@ public class ApiService {
             return null; // No book found
         }
 
-        GoogleBooksResponse.VolumeInfo volumeInfo = response.getItems().get(0).getVolumeInfo();
+        GoogleBooksResponse.VolumeInfo volumeInfo = response.getItems().getFirst().getVolumeInfo();
 
         // Find ISBN_13 if exists
         String isbn13 = isbn;
@@ -68,7 +66,7 @@ public class ApiService {
     public Book fetchBookFromDB(String isbn){
         if(!bookRepository.existsById(isbn)){
             createBook(isbn);
-        };
+        }
         return bookRepository.findById(isbn).get();
     }
 

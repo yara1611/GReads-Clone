@@ -3,6 +3,7 @@ package com.example.GReads_Clone.ReadingLists;
 import com.example.GReads_Clone.Book.ApiService;
 import com.example.GReads_Clone.User.UserService;
 import com.example.GReads_Clone.enums.ReadingListType;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,4 +65,12 @@ public class ReadingListService {
         return readingListRepository.findById(listId).get().getEntries();
     }
 
+    @Transactional //ensures that removing the entry from the list and deleting it from the DB happens in a single transaction.
+    public void deleteEntry(Long entryId, Long listId){
+        ReadingList list = readingListRepository.findById(listId).get();
+        ReadingListEntry entry = readingListEntryRepository.findById(entryId).get();
+        list.removeEntry(entry);
+        readingListRepository.save(list);
+        readingListEntryRepository.delete(entry);
+    }
 }

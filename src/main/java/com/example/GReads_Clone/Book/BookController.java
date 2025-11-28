@@ -18,7 +18,7 @@ public class BookController {
     @Autowired
     private ApiService apiService;
     @Autowired
-    ReadingListService readingNowService;
+    ReadingListService readingListService;
 
     @GetMapping("/{isbn}")
     public Book getBook(@PathVariable String isbn) {
@@ -34,6 +34,7 @@ public class BookController {
         responseData.put("statusCode",200);
         return ResponseEntity.ok().body(responseData);
     }
+
     @DeleteMapping("/deleteBook/{isbn}")
     public ResponseEntity<String> deleteBook(@PathVariable String isbn) {
          apiService.deleteBook(isbn);
@@ -42,19 +43,19 @@ public class BookController {
 
     @PostMapping("/createReadingList")
     public ResponseEntity<String> createRL(@RequestParam Long userId,@RequestParam ReadingListType listType){
-        readingNowService.createList(userId, listType);
+        readingListService.createList(userId, listType);
         return ResponseEntity.ok().body("Created Successfully");
     }
 
     @PostMapping("/addBookToList")
     public ResponseEntity<String> addToList(@RequestParam Long listId, @RequestParam String isbn){
-        readingNowService.addBookToList(listId,isbn);
-        return ResponseEntity.ok().body("Added Successfully");
+        readingListService.addBookToList(listId,isbn);
+        return ResponseEntity.ok().body("Book Added Successfully to List <"+listId+">");
     }
 
 
     @GetMapping("/getBooksInList")
     public List<ReadingListEntry> getAllBooks(@RequestParam Long listId){
-        return readingNowService.getAllEntries(listId);
+        return readingListService.getAllEntries(listId);
     }
 }
