@@ -2,8 +2,8 @@ The Process (Day 1/2)
 - started with the idea of cloning the popular reading website goodreads for the purpose
 of learning how to build a functional system with users and also building something i could
 actually use in real life
-- The use of Java Springboot was for practicing the framework in a realistic environment
-- The process starts with initializing the project with spring initializer and adding all required dependecies
+- The use of Java Spring-boot was for practicing the framework in a realistic environment
+- The process starts with initializing the project with spring initializer and adding all required dependencies
 ; it can be later changed in pom.xml file
 - each entity/object has its own set of files depending on the entities purpose
 - Anything that will write into/read from the connected database will have:
@@ -25,7 +25,7 @@ to fix it I:
 - created a ReadingList Model class (Id, userId, entryId)
 - edited the entry model class (id,ListId,BookId, timeStamp)
 - joined the entry class to the readingList so that each readingList have a list of bookEntries and each entry have one list attached
-another problem I faced with this setup is while fetching the entries inside a reading list the json response was recursivly infinite to fix this we have 3 choices:
+another problem I faced with this setup is while fetching the entries inside a reading list the json response was recursively infinite to fix this we have 3 choices:
 - make DTOs of the exact response
 - use @JsonManagedReference/@JsonBackReference (used for simplicity but will be changed later)
 - use @JsonIdentityInfo
@@ -48,3 +48,5 @@ but in my setup (ReadingNow → Entry → Book → maybe User → …), it quick
 i created a function that calls the createList for each type and will think of how to make a constriction to make it only done once per user
 - created CheckUserLists by adding in the repo a function that checks if a lists by the provided user and type has exists or not and using in the service for each type
 and edited the createBasicLists function
+- added deleteUser and getUser endpoints
+- I created a deleteEntry fucntion that removes the entry from the list first and then deletes it from database, also used @Transactional annotation to make sure both queries get executed in a single transaction
